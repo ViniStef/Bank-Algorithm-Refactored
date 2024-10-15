@@ -1,4 +1,4 @@
-package algorithm.bank.domain.servicecounter;
+package main.java.bankalgorithm.model;
 
 public class ServiceCounter {
     private int serviceAvailableAt = 0;

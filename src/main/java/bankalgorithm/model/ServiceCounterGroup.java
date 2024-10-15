@@ -1,8 +1,8 @@
-package algorithm.bank.domain.servicecounter;
+package main.java.bankalgorithm.model;
 
 import java.util.Arrays;
 
-public class ServiceCounterGroup implements ServiceCounterVerification {
+public class ServiceCounterGroup {
     private ServiceCounter[] serviceCounters;
 
     public ServiceCounterGroup(ServiceCounter[] serviceCounters) {
@@ -13,7 +13,6 @@ public class ServiceCounterGroup implements ServiceCounterVerification {
         return this.serviceCounters;
     }
 
-    @Override
     public int getEarliestCounterAvailableTime() {
         int earliestAvailableCounter = serviceCounters[0].getServiceAvailableAt();
 
@@ -28,7 +27,6 @@ public class ServiceCounterGroup implements ServiceCounterVerification {
         return earliestAvailableCounter;
     }
 
-    @Override
     public void addClientToCounter(int currentTime, int actionTime) {
         int willBeFreeAt = currentTime + actionTime;
         for (ServiceCounter serviceCounter : serviceCounters) {
@@ -44,6 +42,4 @@ public class ServiceCounterGroup implements ServiceCounterVerification {
                 "serviceCounters=" + Arrays.toString(serviceCounters) +
                 '}';
     }
-
-
 }

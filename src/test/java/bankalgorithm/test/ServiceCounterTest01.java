@@ -1,7 +1,7 @@
-package algorithm.bank.test;
+package test.java.bankalgorithm.test;
 
-import algorithm.bank.domain.servicecounter.ServiceCounter;
-import algorithm.bank.domain.servicecounter.ServiceCounterGroup;
+import main.java.bankalgorithm.model.ServiceCounter;
+import main.java.bankalgorithm.model.ServiceCounterGroup;
 
 public class ServiceCounterTest01 {
     public static void main(String[] args) {
