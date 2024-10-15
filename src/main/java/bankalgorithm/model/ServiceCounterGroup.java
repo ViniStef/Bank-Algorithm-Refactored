@@ -27,13 +27,17 @@ public class ServiceCounterGroup {
         return earliestAvailableCounter;
     }
 
-    public void addClientToCounter(int currentTime, int actionTime) {
-        int willBeFreeAt = currentTime + actionTime;
+    public boolean addClientToCounter(int currentTime, Client client) {
+        int willBeFreeAt = currentTime + client.getServiceType().serviceValue;
         for (ServiceCounter serviceCounter : serviceCounters) {
             if (serviceCounter.getServiceAvailableAt() == 0) {
+                System.out.println("Added client to the counter " + client);
                 serviceCounter.setServiceAvailableAt(willBeFreeAt);
+                return true;
             }
         }
+
+        return false;
     }
 
     @Override

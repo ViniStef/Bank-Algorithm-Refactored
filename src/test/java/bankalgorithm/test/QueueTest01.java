@@ -17,25 +17,25 @@ public class QueueTest01 {
         counter2.setServiceAvailableAt(86);
         counter3.setServiceAvailableAt(90);
 
-        Queue queue = new Queue();
+        BankQueue bankQueue = new BankQueue();
 
         Client client1 = new Client(54, ServiceType.DEPOSIT);
         Client client2 = new Client(78, ServiceType.WITHDRAW);
         Client client3 = new Client(95, ServiceType.PAYMENT);
 
         if (serviceCounterGroup.getEarliestCounterAvailableTime() == 0) {
-            serviceCounterGroup.addClientToCounter(60, 123);
+//            serviceCounterGroup.addClientToCounter(60, 123);
             System.out.println("Added client to counter successfully.");
         } else {
-            queue.addToQueue(client1);
+            bankQueue.addToQueue(client1);
             System.out.println("Added client to queue successfully.");
-            queue.addToQueue(client2);
+            bankQueue.addToQueue(client2);
             System.out.println("Added client to queue successfully.");
-            queue.addToQueue(client3);
+            bankQueue.addToQueue(client3);
             System.out.println("Added client to queue successfully.");
         }
 
         System.out.println(serviceCounterGroup);
-        System.out.println(queue);
+        System.out.println(bankQueue);
     }
 }

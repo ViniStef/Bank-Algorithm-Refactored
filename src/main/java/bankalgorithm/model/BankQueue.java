@@ -3,14 +3,19 @@ package main.java.bankalgorithm.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Queue {
+public class BankQueue {
     List<Client> clients = new ArrayList<>();
 
-    public Queue() {
+    public BankQueue() {
 
     }
 
+    public Client getFirstInQueue() {
+        return clients.getFirst();
+    }
+
     public void addToQueue(Client client) {
+        System.out.println("Client added to the queue " + client);
         clients.add(client);
     }
 

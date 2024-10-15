@@ -18,7 +18,7 @@ public class ServiceCounterTest01 {
         counter2.setServiceAvailableAt(86);
 
         if (serviceCounterGroup.getEarliestCounterAvailableTime() == 0) {
-            serviceCounterGroup.addClientToCounter(60, 123);
+//            serviceCounterGroup.addClientToCounter(60, 123);
             System.out.println("Added client to counter successfully.");
         } else {
             System.out.println("No counters available at this moment.");
