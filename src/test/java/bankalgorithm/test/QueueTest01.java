@@ -1,17 +1,20 @@
 package test.java.bankalgorithm.test;
 
-import main.java.bankalgorithm.model.*;
+import main.java.bankalgorithm.models.*;
+import main.java.bankalgorithm.models.enums.ServiceType;
+import main.java.bankalgorithm.services.implementations.BankQueue;
+import main.java.bankalgorithm.services.implementations.ServiceDeskGroup;
 
 public class QueueTest01 {
     public static void main(String[] args) {
-        ServiceCounter counter1 = new ServiceCounter();
-        ServiceCounter counter2 = new ServiceCounter();
-        ServiceCounter counter3 = new ServiceCounter();
+        ServiceDesk counter1 = new ServiceDesk();
+        ServiceDesk counter2 = new ServiceDesk();
+        ServiceDesk counter3 = new ServiceDesk();
 
-        ServiceCounter[] counterGroup =
-                new ServiceCounter[]{counter1, counter2, counter3};
+        ServiceDesk[] counterGroup =
+                new ServiceDesk[]{counter1, counter2, counter3};
 
-        ServiceCounterGroup serviceCounterGroup = new ServiceCounterGroup(counterGroup);
+        ServiceDeskGroup serviceDeskGroup = new ServiceDeskGroup(counterGroup);
 
         counter1.setServiceAvailableAt(65);
         counter2.setServiceAvailableAt(86);
@@ -23,8 +26,8 @@ public class QueueTest01 {
         Client client2 = new Client(78, ServiceType.WITHDRAW);
         Client client3 = new Client(95, ServiceType.PAYMENT);
 
-        if (serviceCounterGroup.getEarliestCounterAvailableTime() == 0) {
-//            serviceCounterGroup.addClientToCounter(60, 123);
+        if (serviceDeskGroup.getEarliestDeskAvailableTime() == 0) {
+//            serviceDeskGroup.addClientToCounter(60, 123);
             System.out.println("Added client to counter successfully.");
         } else {
             bankQueue.addToQueue(client1);
@@ -35,7 +38,7 @@ public class QueueTest01 {
             System.out.println("Added client to queue successfully.");
         }
 
-        System.out.println(serviceCounterGroup);
+        System.out.println(serviceDeskGroup);
         System.out.println(bankQueue);
     }
 }

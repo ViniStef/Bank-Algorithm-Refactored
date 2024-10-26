@@ -1,29 +1,28 @@
 package test.java.bankalgorithm.test;
 
-import main.java.bankalgorithm.model.ServiceCounter;
-import main.java.bankalgorithm.model.ServiceCounterGroup;
+import main.java.bankalgorithm.models.ServiceDesk;
+import main.java.bankalgorithm.services.implementations.ServiceDeskGroup;
 
 public class ServiceCounterTest01 {
     public static void main(String[] args) {
-        ServiceCounter counter1 = new ServiceCounter();
-        ServiceCounter counter2 = new ServiceCounter();
-        ServiceCounter counter3 = new ServiceCounter();
+        ServiceDesk desk1 = new ServiceDesk();
+        ServiceDesk desk2 = new ServiceDesk();
+        ServiceDesk desk3 = new ServiceDesk();
 
-        ServiceCounter[] counterGroup =
-                new ServiceCounter[]{counter1, counter2, counter3};
+        ServiceDesk[] deskGroup =
+                new ServiceDesk[]{desk1, desk2, desk3};
 
-        ServiceCounterGroup serviceCounterGroup = new ServiceCounterGroup(counterGroup);
+        ServiceDeskGroup serviceDeskGroup = new ServiceDeskGroup(deskGroup);
 
-        counter1.setServiceAvailableAt(65);
-        counter2.setServiceAvailableAt(86);
+        desk1.setServiceAvailableAt(65);
+        desk2.setServiceAvailableAt(86);
 
-        if (serviceCounterGroup.getEarliestCounterAvailableTime() == 0) {
-//            serviceCounterGroup.addClientToCounter(60, 123);
-            System.out.println("Added client to counter successfully.");
+        if (serviceDeskGroup.getEarliestDeskAvailableTime() == 0) {
+            System.out.println("Added client to desk successfully.");
         } else {
-            System.out.println("No counters available at this moment.");
+            System.out.println("No desk available at this moment.");
         }
 
-        System.out.println(serviceCounterGroup);
+        System.out.println(serviceDeskGroup);
     }
 }
