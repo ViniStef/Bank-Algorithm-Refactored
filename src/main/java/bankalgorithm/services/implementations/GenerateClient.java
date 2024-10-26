@@ -1,5 +1,6 @@
-package main.java.bankalgorithm.models;
+package main.java.bankalgorithm.services.implementations;
 
+import main.java.bankalgorithm.models.Client;
 import main.java.bankalgorithm.models.enums.ServiceType;
 import main.java.bankalgorithm.services.interfaces.IGenerateClient;
 

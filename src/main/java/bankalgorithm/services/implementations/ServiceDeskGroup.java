@@ -1,49 +1,53 @@
 package main.java.bankalgorithm.services.implementations;
 
 import main.java.bankalgorithm.models.Client;
-import main.java.bankalgorithm.models.ServiceCounter;
+import main.java.bankalgorithm.models.ServiceDesk;
+import main.java.bankalgorithm.services.interfaces.IServiceDeskGroup;
 
 import java.util.Arrays;
 
-public class ServiceCounterGroup {
-    private ServiceCounter[] serviceCounters;
+public class ServiceDeskGroup implements IServiceDeskGroup {
+    private ServiceDesk[] serviceDesks;
 
-    public ServiceCounterGroup(ServiceCounter[] serviceCounters) {
-        this.serviceCounters = serviceCounters;
+    public ServiceDeskGroup(ServiceDesk[] serviceDesks) {
+        this.serviceDesks = serviceDesks;
     }
 
-    public ServiceCounter[] getServiceCounters() {
-        return this.serviceCounters;
+    public ServiceDesk[] getServiceDesks() {
+        return this.serviceDesks;
     }
 
-    public int getEarliestCounterAvailableTime() {
-        int earliestAvailableCounter = serviceCounters[0].getServiceAvailableAt();
+    @Override
+    public int getEarliestDeskAvailableTime() {
+        int earliestAvailableDesk = serviceDesks[0].getServiceAvailableAt();
 
-        for (ServiceCounter serviceCounter : serviceCounters) {
-            if (serviceCounter.getServiceAvailableAt() == 0) {
+        for (ServiceDesk serviceDesk : serviceDesks) {
+            if (serviceDesk.getServiceAvailableAt() == 0) {
                 return 0;
             }
-            if (serviceCounter.getServiceAvailableAt() < earliestAvailableCounter) {
-                earliestAvailableCounter = serviceCounter.getServiceAvailableAt();
+            if (serviceDesk.getServiceAvailableAt() < earliestAvailableDesk) {
+                earliestAvailableDesk = serviceDesk.getServiceAvailableAt();
             }
         }
-        return earliestAvailableCounter;
+        return earliestAvailableDesk;
     }
 
+    @Override
     public void resetServiceAtTime(int currentTime) {
-        for (ServiceCounter serviceCounter : serviceCounters) {
-            if (serviceCounter.getServiceAvailableAt() == currentTime) {
-                serviceCounter.makeServiceAvailable();
+        for (ServiceDesk serviceDesk : serviceDesks) {
+            if (serviceDesk.getServiceAvailableAt() == currentTime) {
+                serviceDesk.makeServiceAvailable();
             }
         }
     }
 
-    public boolean addClientToCounter(int currentTime, Client client) {
+    @Override
+    public boolean addClientToDesk(int currentTime, Client client) {
         int willBeFreeAt = currentTime + client.getServiceType().serviceValue;
-        for (ServiceCounter serviceCounter : serviceCounters) {
-            if (serviceCounter.getServiceAvailableAt() == 0) {
+        for (ServiceDesk serviceDesk : serviceDesks) {
+            if (serviceDesk.getServiceAvailableAt() == 0) {
                 System.out.println("Added client to the counter " + client);
-                serviceCounter.setServiceAvailableAt(willBeFreeAt);
+                serviceDesk.setServiceAvailableAt(willBeFreeAt);
                 return true;
             }
         }
@@ -53,8 +57,8 @@ public class ServiceCounterGroup {
 
     @Override
     public String toString() {
-        return "ServiceCounterGroup{" +
-                "serviceCounters=" + Arrays.toString(serviceCounters) +
+        return "ServiceDeskGroup{" +
+                "serviceDesks=" + Arrays.toString(serviceDesks) +
                 '}';
     }
 }

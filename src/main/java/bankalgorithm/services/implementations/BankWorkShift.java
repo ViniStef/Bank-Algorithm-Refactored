@@ -1,61 +1,107 @@
-package main.java.bankalgorithm.models;
+package main.java.bankalgorithm.services.implementations;
 
-import main.java.bankalgorithm.services.implementations.GenerateClient;
+import main.java.bankalgorithm.models.Client;
+import main.java.bankalgorithm.models.ServiceDesk;
 
 public class BankWorkShift {
-    int workShiftSeconds;
+    private int workShiftSeconds;
+    private int currentSecond = 1;
+    private int nextAvailableCounter = 0;
+    private int totalClients = 0;
+    private ServiceDeskGroup serviceDeskGroup;
+    private BankQueue bankQueue;
 
-    public BankWorkShift(int workShiftSeconds) {
+    public BankWorkShift(int workShiftSeconds, ServiceDeskGroup serviceDeskGroup, BankQueue bankQueue) {
+        this.workShiftSeconds = workShiftSeconds;
+        this.serviceDeskGroup = serviceDeskGroup;
+        this.bankQueue = bankQueue;
+    }
+
+    public void handleTimeMatchesAvailableDesk() {
+        this.serviceDeskGroup.resetServiceAtTime(this.currentSecond);
+        if (!bankQueue.isEmpty()) {
+            this.serviceDeskGroup.addClientToDesk(this.currentSecond, this.bankQueue.getFirstInQueue());
+            this.bankQueue.calculateQueueWaitTime(this.bankQueue.getFirstInQueue(), this.currentSecond);
+            this.bankQueue.removeFromQueue(this.bankQueue.getFirstInQueue());
+        }
+        this.nextAvailableCounter = this.serviceDeskGroup.getEarliestDeskAvailableTime();
+    }
+
+    public void handleCreatedClient(Client client) {
+        if (this.currentSecond >= this.nextAvailableCounter) {
+            boolean isAdded = this.serviceDeskGroup.addClientToDesk(this.currentSecond, client);
+            if (!isAdded) {
+                this.bankQueue.addToQueue(client);
+            }
+            this.nextAvailableCounter = this.serviceDeskGroup.getEarliestDeskAvailableTime();
+        } else {
+            this.bankQueue.addToQueue(client);
+        }
+    }
+
+    public void executeWorkShift(GenerateClient generateClient, ServiceDesk[] deskGroup) {
+        while (this.currentSecond <= this.workShiftSeconds) {
+            if (nextAvailableCounter == this.currentSecond || nextAvailableCounter == 0) {
+                handleTimeMatchesAvailableDesk();
+            }
+            Client client = generateClient.tryGeneratingClient(this.currentSecond);
+            if (client != null) {
+                this.totalClients++;
+                handleCreatedClient(client);
+            }
+
+            this.currentSecond++;
+        }
+        System.out.println(this.bankQueue.calculateAverageQueueTime());
+        System.out.println(this.totalClients);
+    };
+
+    public int getWorkShiftSeconds() {
+        return workShiftSeconds;
+    }
+
+    public void setWorkShiftSeconds(int workShiftSeconds) {
         this.workShiftSeconds = workShiftSeconds;
     }
 
-    public void executeWorkShift() {
-        GenerateClient generateClient = new GenerateClient();
-        Client client = null;
-        BankQueue bankQueue = new BankQueue();
-        int currentSecond = 0;
-        int nextAvailableCounter = 0;
+    public int getCurrentSecond() {
+        return currentSecond;
+    }
 
-        ServiceCounter counter1 = new ServiceCounter();
-        ServiceCounter counter2 = new ServiceCounter();
-        ServiceCounter counter3 = new ServiceCounter();
+    public void setCurrentSecond(int currentSecond) {
+        this.currentSecond = currentSecond;
+    }
 
-        ServiceCounter[] counterGroup = new ServiceCounter[]{counter1, counter2, counter3};
+    public int getNextAvailableCounter() {
+        return nextAvailableCounter;
+    }
 
-        ServiceCounterGroup serviceCounterGroup = new ServiceCounterGroup(counterGroup);
+    public int getTotalClients() {
+        return totalClients;
+    }
 
-        int totalClients = 0;
+    public void setTotalClients(int totalClients) {
+        this.totalClients = totalClients;
+    }
 
+    public ServiceDeskGroup getServiceDeskGroup() {
+        return serviceDeskGroup;
+    }
 
-        while (currentSecond <= workShiftSeconds) {
-            if (nextAvailableCounter == currentSecond || nextAvailableCounter == 0) {
-                serviceCounterGroup.resetServiceAtTime(currentSecond);
-                if (!bankQueue.isEmpty()) {
-                    System.out.println("Current time: " + currentSecond);
-                    serviceCounterGroup.addClientToCounter(currentSecond, bankQueue.getFirstInQueue());
-                    bankQueue.removeFromQueue(bankQueue.getFirstInQueue());
-                }
-                nextAvailableCounter = serviceCounterGroup.getEarliestCounterAvailableTime();
-            }
-            client = generateClient.tryGeneratingClient(currentSecond);
-            if (client != null) {
-                totalClients++;
-                if (currentSecond >= nextAvailableCounter) {
-                    System.out.println("Current time: " + currentSecond);
-                    boolean isAdded = serviceCounterGroup.addClientToCounter(currentSecond, client);
-                    if (!isAdded) {
-                        System.out.println("Current time: " + currentSecond);
-                        bankQueue.addToQueue(client);
+    public BankQueue getBankQueue() {
+        return bankQueue;
+    }
 
-                    }
-                    nextAvailableCounter = serviceCounterGroup.getEarliestCounterAvailableTime();
-                } else {
-                    bankQueue.addToQueue(client);
-                }
-            }
+    @Override
+    public String toString() {
+        return "BankWorkShift{" +
+                "workShiftSeconds=" + workShiftSeconds +
+                ", currentSecond=" + currentSecond +
+                ", nextAvailableCounter=" + nextAvailableCounter +
+                ", totalClients=" + totalClients +
+                ", serviceDeskGroup=" + serviceDeskGroup +
+                ", bankQueue=" + bankQueue +
+                '}';
+    }
 
-            currentSecond++;
-        }
-        System.out.println(totalClients);
-    };
 }
