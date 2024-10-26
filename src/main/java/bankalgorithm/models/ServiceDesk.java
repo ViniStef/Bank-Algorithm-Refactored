@@ -1,4 +1,4 @@
-package main.java.bankalgorithm.model;
+package main.java.bankalgorithm.models;
 
 public class ServiceCounter {
     private int serviceAvailableAt = 0;
@@ -10,6 +10,11 @@ public class ServiceCounter {
     public enum Availability {
         BUSY,
         AVAILABLE
+    }
+
+    public void makeServiceAvailable() {
+        this.serviceAvailableAt = 0;
+        this.availability = Availability.AVAILABLE;
     }
 
     public int getServiceAvailableAt() {

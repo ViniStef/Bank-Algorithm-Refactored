@@ -1,4 +1,4 @@
-package main.java.bankalgorithm.model;
+package main.java.bankalgorithm.models;
 
 import java.util.Random;
 

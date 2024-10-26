@@ -1,4 +1,6 @@
-package main.java.bankalgorithm.model;
+package main.java.bankalgorithm.models;
+
+import main.java.bankalgorithm.services.implementations.GenerateClient;
 
 public class BankWorkShift {
     int workShiftSeconds;
@@ -22,18 +24,38 @@ public class BankWorkShift {
 
         ServiceCounterGroup serviceCounterGroup = new ServiceCounterGroup(counterGroup);
 
+        int totalClients = 0;
+
+
         while (currentSecond <= workShiftSeconds) {
+            if (nextAvailableCounter == currentSecond || nextAvailableCounter == 0) {
+                serviceCounterGroup.resetServiceAtTime(currentSecond);
+                if (!bankQueue.isEmpty()) {
+                    System.out.println("Current time: " + currentSecond);
+                    serviceCounterGroup.addClientToCounter(currentSecond, bankQueue.getFirstInQueue());
+                    bankQueue.removeFromQueue(bankQueue.getFirstInQueue());
+                }
+                nextAvailableCounter = serviceCounterGroup.getEarliestCounterAvailableTime();
+            }
             client = generateClient.tryGeneratingClient(currentSecond);
             if (client != null) {
+                totalClients++;
                 if (currentSecond >= nextAvailableCounter) {
+                    System.out.println("Current time: " + currentSecond);
                     boolean isAdded = serviceCounterGroup.addClientToCounter(currentSecond, client);
                     if (!isAdded) {
+                        System.out.println("Current time: " + currentSecond);
                         bankQueue.addToQueue(client);
+
                     }
+                    nextAvailableCounter = serviceCounterGroup.getEarliestCounterAvailableTime();
+                } else {
+                    bankQueue.addToQueue(client);
                 }
             }
 
             currentSecond++;
         }
+        System.out.println(totalClients);
     };
 }

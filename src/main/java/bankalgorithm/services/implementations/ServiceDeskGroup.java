@@ -1,4 +1,7 @@
-package main.java.bankalgorithm.model;
+package main.java.bankalgorithm.services.implementations;
+
+import main.java.bankalgorithm.models.Client;
+import main.java.bankalgorithm.models.ServiceCounter;
 
 import java.util.Arrays;
 
@@ -25,6 +28,14 @@ public class ServiceCounterGroup {
             }
         }
         return earliestAvailableCounter;
+    }
+
+    public void resetServiceAtTime(int currentTime) {
+        for (ServiceCounter serviceCounter : serviceCounters) {
+            if (serviceCounter.getServiceAvailableAt() == currentTime) {
+                serviceCounter.makeServiceAvailable();
+            }
+        }
     }
 
     public boolean addClientToCounter(int currentTime, Client client) {
