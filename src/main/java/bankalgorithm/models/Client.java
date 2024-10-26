@@ -1,4 +1,6 @@
-package main.java.bankalgorithm.model;
+package main.java.bankalgorithm.models;
+
+import main.java.bankalgorithm.models.enums.ServiceType;
 
 public class Client {
     private int arrivedTime;

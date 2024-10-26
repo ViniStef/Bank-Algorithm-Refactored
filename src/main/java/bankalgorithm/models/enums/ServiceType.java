@@ -1,4 +1,4 @@
-package main.java.bankalgorithm.models;
+package main.java.bankalgorithm.models.enums;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ public enum ServiceType {
     DEPOSIT(90),
     PAYMENT(120);
 
-    final int serviceValue;
+    public final int serviceValue;
     private static final Random random = new Random();
 
     ServiceType(int currentServiceValue) {

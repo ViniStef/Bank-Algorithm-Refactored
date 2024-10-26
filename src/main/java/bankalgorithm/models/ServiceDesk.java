@@ -1,10 +1,10 @@
 package main.java.bankalgorithm.models;
 
-public class ServiceCounter {
+public class ServiceDesk {
     private int serviceAvailableAt = 0;
     private Availability availability = Availability.AVAILABLE;
 
-    public ServiceCounter() {
+    public ServiceDesk() {
     }
 
     public enum Availability {
@@ -36,7 +36,7 @@ public class ServiceCounter {
 
     @Override
     public String toString() {
-        return "ServiceCounter{" +
+        return "ServiceDesk{" +
                 "serviceAvailableAt=" + serviceAvailableAt +
                 ", availability=" + availability +
                 '}';
